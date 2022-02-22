@@ -27,6 +27,12 @@ class Hangman extends Component {
     if guessed letters are {a,p,e}, show "app_e" for "apple"
   */
   guessedWord() {
+    console.log(
+      this.state.answer
+        .split("")
+        .map((ltr) => (this.state.guessed.has(ltr) ? ltr : "_"))
+        .join("") === this.state.answer
+    );
     return this.state.answer
       .split("")
       .map((ltr) => (this.state.guessed.has(ltr) ? ltr : "_"));
@@ -81,15 +87,17 @@ class Hangman extends Component {
         </button>
         <p>Number wrong: {this.state.nWrong}</p>
 
-        {this.state.nWrong < this.props.maxWrong ? (
+        {this.state.nWrong < this.props.maxWrong &&
+        this.guessedWord().join("") !== this.state.answer ? (
           <>
             <p className="Hangman-word">{this.guessedWord()}</p>
             <p className="Hangman-btns">{this.generateButtons()}</p>
           </>
         ) : (
           <>
-            "You lose"
-            <p className="Hangman-word">{this.state.answer}</p>
+            "You{" "}
+            {this.state.answer === this.guessedWord().join("") ? "win" : "lose"}
+            "<p className="Hangman-word">{this.state.answer}</p>
           </>
         )}
       </div>
